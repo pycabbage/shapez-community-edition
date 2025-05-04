@@ -4,10 +4,12 @@ on:
     push:
         branches:
             - master
+            - fork/base
             - ModdedGamers-GH-Actions
     pull_request:
         branches:
             - master
+            - fork/base
 
 jobs:
     yaml-lint:
@@ -15,8 +17,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repo
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
             - name: YAML Lint
-              uses: ibiqlik/action-yamllint@v1.0.0
+              uses: ibiqlik/action-yamllint@v3
               with:
                   file_or_dir: translations/*.yaml
