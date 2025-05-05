@@ -1,7 +1,10 @@
+packages:
+  - packages/*
 onlyBuiltDependencies:
   - '@biomejs/biome'
   - '@parcel/watcher'
   - core-js
+  - esbuild
   - gifsicle
   - jpegtran-bin
   - mozjpeg

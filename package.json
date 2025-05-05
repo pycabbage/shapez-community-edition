@@ -19,7 +19,8 @@
         "package-linux-arm64": "gulp --cwd gulp package.standalone.linux-arm64",
         "package-darwin-x64": "gulp --cwd gulp package.standalone.darwin-x64",
         "package-darwin-arm64": "gulp --cwd gulp package.standalone.darwin-arm64",
-        "package-all": "gulp --cwd gulp package.standalone.all"
+        "package-all": "gulp --cwd gulp package.standalone.all",
+        "mig:dev": ""
     },
     "dependencies": {
         "ajv": "^8.17.1",
