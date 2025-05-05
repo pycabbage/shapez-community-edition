@@ -1,125 +1,125 @@
 /* typehints:start */
-import { Application } from "../application";
+import { Application } from "../application"
 /* typehints:end */
 
-import { IS_MOBILE } from "../core/config";
-import { createLogger } from "../core/logging";
-import { clamp } from "../core/utils";
+import { IS_MOBILE } from "../core/config"
+import { createLogger } from "../core/logging"
+import { clamp } from "../core/utils"
 
-const logger = createLogger("electron-wrapper");
+const logger = createLogger("electron-wrapper")
 
 export class PlatformWrapperImplElectron {
-    constructor(app) {
-        /** @type {Application} */
-        this.app = app;
+  constructor(app) {
+    /** @type {Application} */
+    this.app = app
+  }
+
+  initialize() {
+    document.documentElement.classList.add(`p-${this.getId()}`)
+    return Promise.resolve()
+  }
+
+  getId() {
+    return "electron"
+  }
+
+  getSupportsRestart() {
+    return true
+  }
+
+  /**
+   * Attempt to open an external url
+   * @param {string} url
+   */
+  openExternalLink(url) {
+    logger.log(this, "Opening external:", url)
+    location.replace(url)
+  }
+
+  /**
+   * Returns the strength of touch pans with the mouse
+   */
+  getTouchPanStrength() {
+    return 1
+  }
+
+  /**
+   * Should return if this platform supports ads at all
+   */
+  getSupportsAds() {
+    return false
+  }
+
+  /**
+   * Attempt to restart the app
+   */
+  performRestart() {
+    logger.log(this, "Performing restart")
+    window.location.reload()
+  }
+
+  /**
+   * Returns the UI scale, called on every resize
+   * @returns {number} */
+  getUiScale() {
+    if (IS_MOBILE) {
+      return 1
     }
 
-    initialize() {
-        document.documentElement.classList.add("p-" + this.getId());
-        return Promise.resolve();
-    }
+    const avgDims = Math.min(this.app.screenWidth, this.app.screenHeight)
+    return clamp((avgDims / 1000.0) * 1.9, 0.1, 10)
+  }
 
-    getId() {
-        return "electron";
-    }
+  /**
+   * Returns whether this platform supports a toggleable fullscreen
+   */
+  getSupportsFullscreen() {
+    return true
+  }
 
-    getSupportsRestart() {
-        return true;
-    }
+  /**
+   * Should set the apps fullscreen state to the desired state
+   * @param {boolean} flag
+   */
+  setFullscreen(flag) {
+    ipcRenderer.invoke("set-fullscreen", flag)
+  }
 
-    /**
-     * Attempt to open an external url
-     * @param {string} url
-     */
-    openExternalLink(url) {
-        logger.log(this, "Opening external:", url);
-        location.replace(url);
-    }
+  getSupportsAppExit() {
+    return true
+  }
 
-    /**
-     * Returns the strength of touch pans with the mouse
-     */
-    getTouchPanStrength() {
-        return 1;
-    }
+  /**
+   * Attempts to quit the app
+   */
+  exitApp() {
+    window.close()
+  }
 
-    /**
-     * Should return if this platform supports ads at all
-     */
-    getSupportsAds() {
-        return false;
-    }
+  /**
+   * Whether this platform supports a keyboard
+   */
+  getSupportsKeyboard() {
+    return true
+  }
 
-    /**
-     * Attempt to restart the app
-     */
-    performRestart() {
-        logger.log(this, "Performing restart");
-        window.location.reload();
-    }
+  /**
+   * Should return the minimum supported zoom level
+   * @returns {number}
+   */
+  getMinimumZoom() {
+    return 0.1 * this.getScreenScale()
+  }
 
-    /**
-     * Returns the UI scale, called on every resize
-     * @returns {number} */
-    getUiScale() {
-        if (IS_MOBILE) {
-            return 1;
-        }
+  /**
+   * Should return the maximum supported zoom level
+   * @returns {number}
+   */
+  getMaximumZoom() {
+    return 3.5 * this.getScreenScale()
+  }
 
-        const avgDims = Math.min(this.app.screenWidth, this.app.screenHeight);
-        return clamp((avgDims / 1000.0) * 1.9, 0.1, 10);
-    }
-
-    /**
-     * Returns whether this platform supports a toggleable fullscreen
-     */
-    getSupportsFullscreen() {
-        return true;
-    }
-
-    /**
-     * Should set the apps fullscreen state to the desired state
-     * @param {boolean} flag
-     */
-    setFullscreen(flag) {
-        ipcRenderer.invoke("set-fullscreen", flag);
-    }
-
-    getSupportsAppExit() {
-        return true;
-    }
-
-    /**
-     * Attempts to quit the app
-     */
-    exitApp() {
-        window.close();
-    }
-
-    /**
-     * Whether this platform supports a keyboard
-     */
-    getSupportsKeyboard() {
-        return true;
-    }
-
-    /**
-     * Should return the minimum supported zoom level
-     * @returns {number}
-     */
-    getMinimumZoom() {
-        return 0.1 * this.getScreenScale();
-    }
-
-    /**
-     * Should return the maximum supported zoom level
-     * @returns {number}
-     */
-    getMaximumZoom() {
-        return 3.5 * this.getScreenScale();
-    }
-
-    getScreenScale() {
-        return Math.min(window.innerWidth, window.innerHeight) / 1024.0;
-    }
+  getScreenScale() {
+    return Math.min(window.innerWidth, window.innerHeight) / 1024.0
+  }
 }

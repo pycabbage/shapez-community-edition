@@ -1,7 +1,7 @@
-import { Component } from "../component";
+import { Component } from "../component"
 
 export class HubComponent extends Component {
-    static getId() {
-        return "Hub";
-    }
+  static getId() {
+    return "Hub"
+  }
 }

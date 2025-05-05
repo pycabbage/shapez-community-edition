@@ -26,28 +26,31 @@
  */
 
 export class AtlasDefinition {
-    /**
-     * @param {SourceData} sourceData
-     */
-    constructor({ frames, meta }) {
-        this.meta = meta;
-        this.sourceData = frames;
-        this.sourceFileName = meta.image;
-    }
+  /**
+   * @param {SourceData} sourceData
+   */
+  constructor({ frames, meta }) {
+    this.meta = meta
+    this.sourceData = frames
+    this.sourceFileName = meta.image
+  }
 
-    getFullSourcePath() {
-        return this.sourceFileName;
-    }
+  getFullSourcePath() {
+    return this.sourceFileName
+  }
 }
 
 /** @type {AtlasDefinition[]} **/
 export const atlasFiles = (
-    await Promise.all(
-        import.meta
-            // @ts-ignore
-            .webpackContext("../../../res_built/atlas/", { recursive: false, regExp: /.*\.json/i })
-            .keys()
-            .map(f => f.replace(/^\.\//gi, ""))
-            .map(f => import("../../../res_built/atlas/" + f))
-    )
-).map(data => new AtlasDefinition(data.default));
+  await Promise.all(
+    import.meta
+      // @ts-ignore
+      .webpackContext("../../../res_built/atlas/", {
+        recursive: false,
+        regExp: /.*\.json/i,
+      })
+      .keys()
+      .map((f) => f.replace(/^\.\//gi, ""))
+      .map((f) => import(`../../../res_built/atlas/${f}`))
+  )
+).map((data) => new AtlasDefinition(data.default))

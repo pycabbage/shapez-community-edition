@@ -1,54 +1,54 @@
 /* typehints:start */
-import { GameRoot } from "../root";
+import { GameRoot } from "../root"
 /* typehints:end */
 
-import { BasicSerializableObject } from "../../savegame/serialization";
+import { BasicSerializableObject } from "../../savegame/serialization"
 
 export class BaseGameSpeed extends BasicSerializableObject {
-    /**
-     * @param {GameRoot} root
-     */
-    constructor(root) {
-        super();
-        this.root = root;
-        this.initializeAfterDeserialize(root);
-    }
+  /**
+   * @param {GameRoot} root
+   */
+  constructor(root) {
+    super()
+    this.root = root
+    this.initializeAfterDeserialize(root)
+  }
 
-    /** @returns {string} */
-    static getId() {
-        abstract;
-        return "unknown-speed";
-    }
+  /** @returns {string} */
+  static getId() {
+    abstract
+    return "unknown-speed"
+  }
 
-    getId() {
-        return /** @type {typeof BaseGameSpeed} */ (this.constructor).getId();
-    }
+  getId() {
+    return /** @type {typeof BaseGameSpeed} */ (this.constructor).getId()
+  }
 
-    static getSchema() {
-        return {};
-    }
+  static getSchema() {
+    return {}
+  }
 
-    initializeAfterDeserialize(root) {
-        this.root = root;
-    }
+  initializeAfterDeserialize(root) {
+    this.root = root
+  }
 
-    /**
-     * Returns the time multiplier
-     */
-    getTimeMultiplier() {
-        return 1;
-    }
+  /**
+   * Returns the time multiplier
+   */
+  getTimeMultiplier() {
+    return 1
+  }
 
-    /**
-     * Returns how many logic steps there may be queued
-     */
-    getMaxLogicStepsInQueue() {
-        return 3;
-    }
+  /**
+   * Returns how many logic steps there may be queued
+   */
+  getMaxLogicStepsInQueue() {
+    return 3
+  }
 
-    // Internals
-    /** @returns {BaseGameSpeed} */
-    newSpeed(instance) {
-        return new instance(this.root);
-    }
+  // Internals
+  /** @returns {BaseGameSpeed} */
+  newSpeed(instance) {
+    return new instance(this.root)
+  }
 }

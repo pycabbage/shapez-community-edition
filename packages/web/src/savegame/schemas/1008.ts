@@ -1,23 +1,23 @@
-import { createLogger } from "../../core/logging.js";
-import { SavegameInterface_V1007 } from "./1007.js";
+import { createLogger } from "../../core/logging.js"
+import { SavegameInterface_V1007 } from "./1007.js"
 
-import schema from "./1008.json";
-const logger = createLogger("savegame_interface/1008");
+import schema from "./1008.json"
+const logger = createLogger("savegame_interface/1008")
 
 export class SavegameInterface_V1008 extends SavegameInterface_V1007 {
-    getVersion() {
-        return 1008;
-    }
+  getVersion() {
+    return 1008
+  }
 
-    getSchemaUncached() {
-        return schema;
-    }
+  getSchemaUncached() {
+    return schema
+  }
 
-    /**
-     * @param {import("../savegame_typedefs.js").SavegameData} data
-     */
-    static migrate1007to1008(data) {
-        // Note: no-op since achievement removal
-        logger.log("Migrating 1007 to 1008");
-    }
+  /**
+   * @param {import("../savegame_typedefs.js").SavegameData} data
+   */
+  static migrate1007to1008(data) {
+    // Note: no-op since achievement removal
+    logger.log("Migrating 1007 to 1008")
+  }
 }

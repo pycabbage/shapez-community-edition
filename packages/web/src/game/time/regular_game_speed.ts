@@ -1,11 +1,11 @@
-import { BaseGameSpeed } from "./base_game_speed";
+import { BaseGameSpeed } from "./base_game_speed"
 
 export class RegularGameSpeed extends BaseGameSpeed {
-    static getId() {
-        return "regular";
-    }
+  static getId() {
+    return "regular"
+  }
 
-    getTimeMultiplier() {
-        return 1;
-    }
+  getTimeMultiplier() {
+    return 1
+  }
 }

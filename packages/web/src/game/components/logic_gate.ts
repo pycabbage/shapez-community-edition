@@ -1,34 +1,34 @@
-import { Component } from "../component";
+import { Component } from "../component"
 
 /** @enum {string} */
 export const enumLogicGateType = {
-    and: "and",
-    not: "not",
-    xor: "xor",
-    or: "or",
-    transistor: "transistor",
+  and: "and",
+  not: "not",
+  xor: "xor",
+  or: "or",
+  transistor: "transistor",
 
-    analyzer: "analyzer",
-    rotator: "rotator",
-    unstacker: "unstacker",
-    cutter: "cutter",
-    compare: "compare",
-    stacker: "stacker",
-    painter: "painter",
-};
+  analyzer: "analyzer",
+  rotator: "rotator",
+  unstacker: "unstacker",
+  cutter: "cutter",
+  compare: "compare",
+  stacker: "stacker",
+  painter: "painter",
+}
 
 export class LogicGateComponent extends Component {
-    static getId() {
-        return "LogicGate";
-    }
+  static getId() {
+    return "LogicGate"
+  }
 
-    /**
-     *
-     * @param {object} param0
-     * @param {enumLogicGateType=} param0.type
-     */
-    constructor({ type = enumLogicGateType.and }) {
-        super();
-        this.type = type;
-    }
+  /**
+   *
+   * @param {object} param0
+   * @param {enumLogicGateType=} param0.type
+   */
+  constructor({ type = enumLogicGateType.and }) {
+    super()
+    this.type = type
+  }
 }

@@ -1,69 +1,75 @@
-import { Signal } from "./signal";
+import { Signal } from "./signal"
 
 // @ts-ignore
-import BackgroundAnimationFrameEmitterWorker from "@/webworkers/background_animation_frame_emittter.worker?worker";
+import BackgroundAnimationFrameEmitterWorker from "@/webworkers/background_animation_frame_emittter.worker?worker"
 
-import { createLogger } from "./logging";
-const logger = createLogger("animation_frame");
+import { createLogger } from "./logging"
+const logger = createLogger("animation_frame")
 
-const maxDtMs = 1000;
-const resetDtMs = 16;
+const maxDtMs = 1000
+const resetDtMs = 16
 
 export class AnimationFrame {
-    frameEmitted: Signal<[number]>;
-    bgFrameEmitted: Signal<[number]>;
-    backgroundWorker: Worker;
-    lastTime: DOMHighResTimeStamp;
-    bgLastTime: DOMHighResTimeStamp;
-    boundMethod: (time: number) => void;
+  frameEmitted: Signal<[number]>
+  bgFrameEmitted: Signal<[number]>
+  backgroundWorker: Worker
+  lastTime: DOMHighResTimeStamp
+  bgLastTime: DOMHighResTimeStamp
+  boundMethod: (time: number) => void
 
-    constructor() {
-        this.frameEmitted = new Signal();
-        this.bgFrameEmitted = new Signal();
+  constructor() {
+    this.frameEmitted = new Signal()
+    this.bgFrameEmitted = new Signal()
 
-        this.lastTime = performance.now();
-        this.bgLastTime = performance.now();
+    this.lastTime = performance.now()
+    this.bgLastTime = performance.now()
 
-        this.boundMethod = this.handleAnimationFrame.bind(this);
+    this.boundMethod = this.handleAnimationFrame.bind(this)
 
-        this.backgroundWorker = new BackgroundAnimationFrameEmitterWorker();
-        this.backgroundWorker.addEventListener("error", err => {
-            logger.error("Error in background fps worker:", err);
-        });
-        this.backgroundWorker.addEventListener("message", this.handleBackgroundTick.bind(this));
+    this.backgroundWorker = new BackgroundAnimationFrameEmitterWorker()
+    this.backgroundWorker.addEventListener("error", (err) => {
+      logger.error("Error in background fps worker:", err)
+    })
+    this.backgroundWorker.addEventListener(
+      "message",
+      this.handleBackgroundTick.bind(this)
+    )
+  }
+
+  handleBackgroundTick() {
+    const time = performance.now()
+
+    let dt = time - this.bgLastTime
+
+    if (dt > maxDtMs) {
+      dt = resetDtMs
     }
 
-    handleBackgroundTick() {
-        const time = performance.now();
+    this.bgFrameEmitted.dispatch(dt)
+    this.bgLastTime = time
+  }
 
-        let dt = time - this.bgLastTime;
+  start() {
+    assertAlways(
+      window.requestAnimationFrame,
+      "requestAnimationFrame is not supported!"
+    )
+    this.handleAnimationFrame(performance.now())
+  }
 
-        if (dt > maxDtMs) {
-            dt = resetDtMs;
-        }
+  handleAnimationFrame(time: number) {
+    let dt = time - this.lastTime
 
-        this.bgFrameEmitted.dispatch(dt);
-        this.bgLastTime = time;
+    if (dt > maxDtMs) {
+      dt = resetDtMs
     }
 
-    start() {
-        assertAlways(window.requestAnimationFrame, "requestAnimationFrame is not supported!");
-        this.handleAnimationFrame(performance.now());
+    try {
+      this.frameEmitted.dispatch(dt)
+    } catch (ex) {
+      console.error(ex)
     }
-
-    handleAnimationFrame(time: number) {
-        let dt = time - this.lastTime;
-
-        if (dt > maxDtMs) {
-            dt = resetDtMs;
-        }
-
-        try {
-            this.frameEmitted.dispatch(dt);
-        } catch (ex) {
-            console.error(ex);
-        }
-        this.lastTime = time;
-        window.requestAnimationFrame(this.boundMethod);
-    }
+    this.lastTime = time
+    window.requestAnimationFrame(this.boundMethod)
+  }
 }

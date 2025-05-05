@@ -1,66 +1,68 @@
-import { enumDirection, Vector } from "../../core/vector";
-import { enumPinSlotType, WiredPinsComponent } from "../components/wired_pins";
-import { Entity } from "../entity";
-import { defaultBuildingVariant, MetaBuilding } from "../meta_building";
-import { GameRoot } from "../root";
-import { LeverComponent } from "../components/lever";
-import { enumHubGoalRewards } from "../tutorial_goals";
+import { Vector, enumDirection } from "../../core/vector"
+import { LeverComponent } from "../components/lever"
+import { WiredPinsComponent, enumPinSlotType } from "../components/wired_pins"
+import { Entity } from "../entity"
+import { MetaBuilding, defaultBuildingVariant } from "../meta_building"
+import { GameRoot } from "../root"
+import { enumHubGoalRewards } from "../tutorial_goals"
 
 export class MetaLeverBuilding extends MetaBuilding {
-    constructor() {
-        super("lever");
-    }
+  constructor() {
+    super("lever")
+  }
 
-    static getAllVariantCombinations() {
-        return [
-            {
-                internalId: 33,
-                variant: defaultBuildingVariant,
-            },
-        ];
-    }
+  static getAllVariantCombinations() {
+    return [
+      {
+        internalId: 33,
+        variant: defaultBuildingVariant,
+      },
+    ]
+  }
 
-    getSilhouetteColor() {
-        // @todo: Render differently based on if its activated or not
-        return "#1a678b";
-    }
+  getSilhouetteColor() {
+    // @todo: Render differently based on if its activated or not
+    return "#1a678b"
+  }
 
-    /**
-     * @param {GameRoot} root
-     */
-    getIsUnlocked(root) {
-        return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_wires_painter_and_levers);
-    }
+  /**
+   * @param {GameRoot} root
+   */
+  getIsUnlocked(root) {
+    return root.hubGoals.isRewardUnlocked(
+      enumHubGoalRewards.reward_wires_painter_and_levers
+    )
+  }
 
-    getDimensions() {
-        return new Vector(1, 1);
-    }
+  getDimensions() {
+    return new Vector(1, 1)
+  }
 
-    getSprite() {
-        return null;
-    }
+  getSprite() {
+    return null
+  }
 
-    getShowWiresLayerPreview() {
-        return true;
-    }
+  getShowWiresLayerPreview() {
+    return true
+  }
 
-    /**
-     * Creates the entity at the given location
-     * @param {Entity} entity
-     */
-    setupEntityComponents(entity) {
-        entity.addComponent(
-            new WiredPinsComponent({
-                slots: [
-                    {
-                        pos: new Vector(0, 0),
-                        direction: enumDirection.top,
-                        type: enumPinSlotType.logicalEjector,
-                    },
-                ],
-            })
-        );
+  /**
+   * Creates the entity at the given location
+   * @param {Entity} entity
+   */
+  setupEntityComponents(entity) {
+    entity.addComponent(
+      new WiredPinsComponent({
+        slots: [
+          {
+            pos: new Vector(0, 0),
+            direction: enumDirection.top,
+            type: enumPinSlotType.logicalEjector,
+          },
+        ],
+      })
+    )
 
-        entity.addComponent(new LeverComponent({}));
-    }
+    entity.addComponent(new LeverComponent({}))
+  }
 }

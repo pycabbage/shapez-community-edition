@@ -1,7 +1,7 @@
-import { types } from "../../savegame/serialization";
-import { BaseItem } from "../base_item";
-import { Component } from "../component";
-import { typeItemSingleton } from "../item_resolver";
+import { types } from "../../savegame/serialization"
+import { BaseItem } from "../base_item"
+import { Component } from "../component"
+import { typeItemSingleton } from "../item_resolver"
 
 /**
  * @typedef {{
@@ -11,49 +11,49 @@ import { typeItemSingleton } from "../item_resolver";
  */
 
 export class FilterComponent extends Component {
-    static getId() {
-        return "Filter";
+  static getId() {
+    return "Filter"
+  }
+
+  duplicateWithoutContents() {
+    return new FilterComponent()
+  }
+
+  static getSchema() {
+    return {
+      pendingItemsToLeaveThrough: types.array(
+        types.structured({
+          item: typeItemSingleton,
+          progress: types.ufloat,
+        })
+      ),
+
+      pendingItemsToReject: types.array(
+        types.structured({
+          item: typeItemSingleton,
+          progress: types.ufloat,
+        })
+      ),
     }
+  }
 
-    duplicateWithoutContents() {
-        return new FilterComponent();
-    }
+  constructor() {
+    super()
 
-    static getSchema() {
-        return {
-            pendingItemsToLeaveThrough: types.array(
-                types.structured({
-                    item: typeItemSingleton,
-                    progress: types.ufloat,
-                })
-            ),
+    this.clear()
+  }
 
-            pendingItemsToReject: types.array(
-                types.structured({
-                    item: typeItemSingleton,
-                    progress: types.ufloat,
-                })
-            ),
-        };
-    }
+  clear() {
+    /**
+     * Items in queue to leave through
+     * @type {Array<PendingFilterItem>}
+     */
+    this.pendingItemsToLeaveThrough = []
 
-    constructor() {
-        super();
-
-        this.clear();
-    }
-
-    clear() {
-        /**
-         * Items in queue to leave through
-         * @type {Array<PendingFilterItem>}
-         */
-        this.pendingItemsToLeaveThrough = [];
-
-        /**
-         * Items in queue to reject
-         * @type {Array<PendingFilterItem>}
-         */
-        this.pendingItemsToReject = [];
-    }
+    /**
+     * Items in queue to reject
+     * @type {Array<PendingFilterItem>}
+     */
+    this.pendingItemsToReject = []
+  }
 }

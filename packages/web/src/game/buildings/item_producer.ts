@@ -1,53 +1,53 @@
-import { enumDirection, Vector } from "../../core/vector";
-import { ItemEjectorComponent } from "../components/item_ejector";
-import { ItemProducerComponent } from "../components/item_producer";
-import { enumPinSlotType, WiredPinsComponent } from "../components/wired_pins";
-import { Entity } from "../entity";
-import { defaultBuildingVariant, MetaBuilding } from "../meta_building";
+import { Vector, enumDirection } from "../../core/vector"
+import { ItemEjectorComponent } from "../components/item_ejector"
+import { ItemProducerComponent } from "../components/item_producer"
+import { WiredPinsComponent, enumPinSlotType } from "../components/wired_pins"
+import { Entity } from "../entity"
+import { MetaBuilding, defaultBuildingVariant } from "../meta_building"
 
 export class MetaItemProducerBuilding extends MetaBuilding {
-    constructor() {
-        super("item_producer");
-    }
+  constructor() {
+    super("item_producer")
+  }
 
-    static getAllVariantCombinations() {
-        return [
-            {
-                internalId: 61,
-                variant: defaultBuildingVariant,
-            },
-        ];
-    }
+  static getAllVariantCombinations() {
+    return [
+      {
+        internalId: 61,
+        variant: defaultBuildingVariant,
+      },
+    ]
+  }
 
-    getSilhouetteColor() {
-        return "#b37dcd";
-    }
+  getSilhouetteColor() {
+    return "#b37dcd"
+  }
 
-    getShowWiresLayerPreview() {
-        return true;
-    }
+  getShowWiresLayerPreview() {
+    return true
+  }
 
-    /**
-     * Creates the entity at the given location
-     * @param {Entity} entity
-     */
-    setupEntityComponents(entity) {
-        entity.addComponent(
-            new ItemEjectorComponent({
-                slots: [{ pos: new Vector(0, 0), direction: enumDirection.top }],
-            })
-        );
-        entity.addComponent(
-            new WiredPinsComponent({
-                slots: [
-                    {
-                        pos: new Vector(0, 0),
-                        type: enumPinSlotType.logicalAcceptor,
-                        direction: enumDirection.bottom,
-                    },
-                ],
-            })
-        );
-        entity.addComponent(new ItemProducerComponent({}));
-    }
+  /**
+   * Creates the entity at the given location
+   * @param {Entity} entity
+   */
+  setupEntityComponents(entity) {
+    entity.addComponent(
+      new ItemEjectorComponent({
+        slots: [{ pos: new Vector(0, 0), direction: enumDirection.top }],
+      })
+    )
+    entity.addComponent(
+      new WiredPinsComponent({
+        slots: [
+          {
+            pos: new Vector(0, 0),
+            type: enumPinSlotType.logicalAcceptor,
+            direction: enumDirection.bottom,
+          },
+        ],
+      })
+    )
+    entity.addComponent(new ItemProducerComponent({}))
+  }
 }

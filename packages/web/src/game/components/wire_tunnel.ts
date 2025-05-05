@@ -1,17 +1,17 @@
-import { Component } from "../component";
+import { Component } from "../component"
 
 export class WireTunnelComponent extends Component {
-    static getId() {
-        return "WireTunnel";
-    }
+  static getId() {
+    return "WireTunnel"
+  }
 
-    constructor() {
-        super();
+  constructor() {
+    super()
 
-        /**
-         * Linked network, only if its not multiple directions
-         * @type {Array<import("../systems/wire").WireNetwork>}
-         */
-        this.linkedNetworks = [];
-    }
+    /**
+     * Linked network, only if its not multiple directions
+     * @type {Array<import("../systems/wire").WireNetwork>}
+     */
+    this.linkedNetworks = []
+  }
 }

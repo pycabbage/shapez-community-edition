@@ -1,38 +1,38 @@
-import { Mod } from "./mod";
+import type { Mod } from "./mod"
 
 export interface ModAuthor {
-    name: string;
-    website?: string;
+  name: string
+  website?: string
 }
 
 export interface ModMetadata {
-    // format: 1;
-    id: string;
-    entry: string;
-    name: string;
-    description?: string;
-    authors: ModAuthor[];
-    version: string;
-    savegameResident: boolean;
-    website?: string;
-    source?: string;
+  // format: 1;
+  id: string
+  entry: string
+  name: string
+  description?: string
+  authors: ModAuthor[]
+  version: string
+  savegameResident: boolean
+  website?: string
+  source?: string
 }
 
-export type ModSource = "user" | "distro" | "dev";
+export type ModSource = "user" | "distro" | "dev"
 
 export interface ModQueueEntry {
-    source: ModSource;
-    file: string;
-    disabled: boolean;
-    metadata: ModMetadata;
+  source: ModSource
+  file: string
+  disabled: boolean
+  metadata: ModMetadata
 }
 
 export interface ModInfo {
-    source: ModSource;
-    file: string;
-    mod: Mod;
+  source: ModSource
+  file: string
+  mod: Mod
 }
 
 export interface FrozenModMetadata extends Readonly<ModMetadata> {
-    authors: ReadonlyArray<Readonly<ModAuthor>>;
+  authors: ReadonlyArray<Readonly<ModAuthor>>
 }

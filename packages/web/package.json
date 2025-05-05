@@ -1,20 +1,23 @@
 {
-    "name": "@shapez/web",
-    "private": true,
-    "version": "1.6.0",
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "tsc && vite build",
-        "preview": "vite preview"
-    },
-    "devDependencies": {
-        "typescript": "~5.7.2",
-        "vite": "^6.3.1"
-    },
-    "dependencies": {
-        "@shapez/resources": "workspace:^",
-        "@shapez/translations": "workspace:^",
-        "vite-tsconfig-paths": "^5.1.4"
-    }
+  "name": "@shapez/web",
+  "private": true,
+  "version": "1.6.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@modyfi/vite-plugin-yaml": "^1.1.1",
+    "typescript": "~5.7.2",
+    "vite": "^6.3.1"
+  },
+  "dependencies": {
+    "@shapez/resources": "workspace:^",
+    "@shapez/translations": "workspace:^",
+    "howler": "^2.2.4",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
 }

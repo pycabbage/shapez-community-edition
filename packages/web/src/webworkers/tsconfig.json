@@ -1,6 +1,6 @@
 {
-    "extends": ["../../tsconfig"],
-    "compilerOptions": {
-        "lib": ["WebWorker"]
-    }
+  "extends": ["../../tsconfig"],
+  "compilerOptions": {
+    "lib": ["WebWorker"]
+  }
 }

@@ -1,5 +1,5 @@
-import { globalConfig } from "./config";
-import { stringify as flattedStringify } from "flatted";
+import { stringify as flattedStringify } from "flatted"
+import { globalConfig } from "./config"
 
 /*
 Logging functions
@@ -10,29 +10,29 @@ Logging functions
  * Base logger class
  */
 class Logger {
-    constructor(context) {
-        this.context = context;
-    }
+  constructor(context) {
+    this.context = context
+  }
 
-    debug(...args) {
-        globalDebug(this.context, ...args);
-    }
+  debug(...args) {
+    globalDebug(this.context, ...args)
+  }
 
-    log(...args) {
-        globalLog(this.context, ...args);
-    }
+  log(...args) {
+    globalLog(this.context, ...args)
+  }
 
-    warn(...args) {
-        globalWarn(this.context, ...args);
-    }
+  warn(...args) {
+    globalWarn(this.context, ...args)
+  }
 
-    error(...args) {
-        globalError(this.context, ...args);
-    }
+  error(...args) {
+    globalError(this.context, ...args)
+  }
 }
 
 export function createLogger(context) {
-    return new Logger(context);
+  return new Logger(context)
 }
 
 /**
@@ -40,35 +40,35 @@ export function createLogger(context) {
  * @param {Error|ErrorEvent} err
  */
 export function serializeError(err) {
-    if (!err) {
-        return null;
-    }
-    const result = {
-        type: err.constructor.name,
-    };
+  if (!err) {
+    return null
+  }
+  const result = {
+    type: err.constructor.name,
+  }
 
-    if (err instanceof Error) {
-        result.message = err.message;
-        result.name = err.name;
-        result.stack = err.stack;
-        result.type = "{type.Error}";
-    } else if (err instanceof ErrorEvent) {
-        result.filename = err.filename;
-        result.message = err.message;
-        result.lineno = err.lineno;
-        result.colno = err.colno;
-        result.type = "{type.ErrorEvent}";
+  if (err instanceof Error) {
+    result.message = err.message
+    result.name = err.name
+    result.stack = err.stack
+    result.type = "{type.Error}"
+  } else if (err instanceof ErrorEvent) {
+    result.filename = err.filename
+    result.message = err.message
+    result.lineno = err.lineno
+    result.colno = err.colno
+    result.type = "{type.ErrorEvent}"
 
-        if (err.error) {
-            result.error = serializeError(err.error);
-        } else {
-            result.error = "{not-provided}";
-        }
+    if (err.error) {
+      result.error = serializeError(err.error)
     } else {
-        result.type = "{unkown-type:" + typeof err + "}";
+      result.error = "{not-provided}"
     }
+  } else {
+    result.type = `{unkown-type:${typeof err}}`
+  }
 
-    return result;
+  return result
 }
 
 /**
@@ -76,11 +76,11 @@ export function serializeError(err) {
  * @param {Event} event
  */
 function serializeEvent(event) {
-    let result = {
-        type: "{type.Event:" + typeof event + "}",
-    };
-    result.eventType = event.type;
-    return result;
+  const result = {
+    type: `{type.Event:${typeof event}}`,
+  }
+  result.eventType = event.type
+  return result
 }
 
 /**
@@ -89,16 +89,16 @@ function serializeEvent(event) {
  * @param {any} value
  */
 function preparePayload(key, value) {
-    if (value instanceof Error || value instanceof ErrorEvent) {
-        return serializeError(value);
-    }
-    if (value instanceof Event) {
-        return serializeEvent(value);
-    }
-    if (typeof value === "undefined") {
-        return null;
-    }
-    return value;
+  if (value instanceof Error || value instanceof ErrorEvent) {
+    return serializeError(value)
+  }
+  if (value instanceof Event) {
+    return serializeEvent(value)
+  }
+  if (typeof value === "undefined") {
+    return null
+  }
+  return value
 }
 
 /**
@@ -106,106 +106,110 @@ function preparePayload(key, value) {
  * @param {any} payload
  */
 export function stringifyObjectContainingErrors(payload) {
-    return flattedStringify(payload, preparePayload);
+  return flattedStringify(payload, preparePayload)
 }
 
 export function globalDebug(context, ...args) {
-    if (G_IS_DEV) {
-        logInternal(context, console.log, prepareArgsForLogging(args));
-    }
+  if (G_IS_DEV) {
+    logInternal(context, console.log, prepareArgsForLogging(args))
+  }
 }
 
 export function globalLog(context, ...args) {
-    logInternal(context, console.log, prepareArgsForLogging(args));
+  logInternal(context, console.log, prepareArgsForLogging(args))
 }
 
 export function globalWarn(context, ...args) {
-    logInternal(context, console.warn, prepareArgsForLogging(args));
+  logInternal(context, console.warn, prepareArgsForLogging(args))
 }
 
 export function globalError(context, ...args) {
-    args = prepareArgsForLogging(args);
-    logInternal(context, console.error, args);
+  args = prepareArgsForLogging(args)
+  logInternal(context, console.error, args)
 }
 
-function prepareArgsForLogging(args) {
-    let result = [];
-    for (let i = 0; i < args.length; ++i) {
-        result.push(args[i]);
-    }
-    return result;
+function prepareArgsForLogging<T>(args: T[]): T[] {
+  const result: T[] = []
+  for (let i = 0; i < args.length; ++i) {
+    result.push(args[i])
+  }
+  return result
 }
 
 /**
  * @param {Array<any>} args
  */
 function internalBuildStringFromArgs(args) {
-    let result = [];
+  const result = []
 
-    for (let i = 0; i < args.length; ++i) {
-        let arg = args[i];
-        if (
-            typeof arg === "string" ||
-            typeof arg === "number" ||
-            typeof arg === "boolean" ||
-            arg === null ||
-            arg === undefined
-        ) {
-            result.push("" + arg);
-        } else if (arg instanceof Error) {
-            result.push(arg.message);
-        } else {
-            result.push("[object]");
-        }
+  for (let i = 0; i < args.length; ++i) {
+    const arg = args[i]
+    if (
+      typeof arg === "string" ||
+      typeof arg === "number" ||
+      typeof arg === "boolean" ||
+      arg === null ||
+      arg === undefined
+    ) {
+      result.push(`${arg}`)
+    } else if (arg instanceof Error) {
+      result.push(arg.message)
+    } else {
+      result.push("[object]")
     }
-    return result.join(" ");
+  }
+  return result.join(" ")
 }
 
-export function logSection(name, color) {
-    while (name.length <= 14) {
-        name = " " + name + " ";
-    }
-    name = name.padEnd(19, " ");
+export function logSection(name: string, color: string) {
+  while (name.length <= 14) {
+    name = ` ${name} `
+  }
+  name = name.padEnd(19, " ")
 
-    const lineCss =
-        "letter-spacing: -3px; color: " + color + "; font-size: 6px; background: #eee; color: #eee;";
-    const line = "%c----------------------------";
-    console.log("\n" + line + " %c" + name + " " + line + "\n", lineCss, "color: " + color, lineCss);
+  const lineCss = `letter-spacing: -3px; color: ${color}; font-size: 6px; background: #eee; color: #eee;`
+  const line = "%c----------------------------"
+  console.log(
+    `\n${line} %c${name} ${line}\n`,
+    lineCss,
+    `color: ${color}`,
+    lineCss
+  )
 }
 
 function extractHandleContext(handle) {
-    let context = handle || "unknown";
-    if (handle && handle.constructor && handle.constructor.name) {
-        context = handle.constructor.name;
-        if (context === "String") {
-            context = handle;
-        }
+  let context = handle || "unknown"
+  if (handle?.constructor?.name) {
+    context = handle.constructor.name
+    if (context === "String") {
+      context = handle
     }
+  }
 
-    if (handle && handle.name) {
-        context = handle.name;
-    }
-    return context + "";
+  if (handle?.name) {
+    context = handle.name
+  }
+  return `${context}`
 }
 
 function logInternal(handle, consoleMethod, args) {
-    const context = extractHandleContext(handle).padEnd(20, " ");
-    const labelColor = handle && handle.LOG_LABEL_COLOR ? handle.LOG_LABEL_COLOR : "#aaa";
+  const context = extractHandleContext(handle).padEnd(20, " ")
+  const labelColor = handle?.LOG_LABEL_COLOR ? handle.LOG_LABEL_COLOR : "#aaa"
 
-    if (G_IS_DEV && globalConfig.debug.logTimestamps) {
-        const timestamp = "⏱ %c" + (Math.floor(performance.now()) + "").padEnd(6, " ") + "";
-        consoleMethod.call(
-            console,
-            timestamp + " %c" + context,
-            "color: #7f7;",
-            "color: " + labelColor + ";",
-            ...args
-        );
-    } else {
-        // if (G_IS_DEV && !globalConfig.debug.disableLoggingLogSources) {
-        consoleMethod.call(console, "%c" + context, "color: " + labelColor, ...args);
-        // } else {
-        // consoleMethod.call(console, ...args);
-        // }
-    }
+  if (G_IS_DEV && globalConfig.debug.logTimestamps) {
+    const timestamp = `⏱ %c${(`${Math.floor(performance.now())}`).padEnd(6, " ")}`
+    consoleMethod.call(
+      console,
+      `${timestamp} %c${context}`,
+      "color: #7f7;",
+      `color: ${labelColor};`,
+      ...args
+    )
+  } else {
+    // if (G_IS_DEV && !globalConfig.debug.disableLoggingLogSources) {
+    consoleMethod.call(console, `%c${context}`, `color: ${labelColor}`, ...args)
+    // } else {
+    // consoleMethod.call(console, ...args);
+    // }
+  }
 }

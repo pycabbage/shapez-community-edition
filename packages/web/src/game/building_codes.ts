@@ -1,10 +1,10 @@
+import { AtlasSprite } from "../core/sprites"
+import { Vector } from "../core/vector"
 /* typehints:start */
-import { MetaBuilding } from "./meta_building";
-import { AtlasSprite } from "../core/sprites";
-import { Vector } from "../core/vector";
+import { MetaBuilding } from "./meta_building"
 /* typehints:end */
 
-import { gMetaBuildingRegistry } from "../core/global_registries";
+import { gMetaBuildingRegistry } from "../core/global_registries"
 
 /**
  * @typedef {{
@@ -24,14 +24,14 @@ import { gMetaBuildingRegistry } from "../core/global_registries";
  * @type {Object<number|string, BuildingVariantIdentifier>}
  */
 export const gBuildingVariants = {
-    // Set later
-};
+  // Set later
+}
 
 /**
  * Mapping from 'metaBuildingId/variant/rotationVariant' to building code
  * @type {Map<string, number|string>}
  */
-const variantsCache = new Map();
+const variantsCache = new Map()
 
 /**
  * Registers a new variant
@@ -41,20 +41,20 @@ const variantsCache = new Map();
  * @param {number} rotationVariant
  */
 export function registerBuildingVariant(
-    code,
-    meta,
-    variant = "default" /* @TODO: Circular dependency, actually its defaultBuildingVariant */,
-    rotationVariant = 0
+  code,
+  meta,
+  variant = "default" /* @TODO: Circular dependency, actually its defaultBuildingVariant */,
+  rotationVariant = 0
 ) {
-    assert(!gBuildingVariants[code], "Duplicate id: " + code);
-    gBuildingVariants[code] = {
-        metaClass: meta,
-        metaInstance: gMetaBuildingRegistry.findByClass(meta),
-        variant,
-        rotationVariant,
-        // @ts-ignore
-        tileSize: new meta().getDimensions(variant),
-    };
+  assert(!gBuildingVariants[code], `Duplicate id: ${code}`)
+  gBuildingVariants[code] = {
+    metaClass: meta,
+    metaInstance: gMetaBuildingRegistry.findByClass(meta),
+    variant,
+    rotationVariant,
+    // @ts-ignore
+    tileSize: new meta().getDimensions(variant),
+  }
 }
 
 /**
@@ -65,7 +65,7 @@ export function registerBuildingVariant(
  * @returns
  */
 function generateBuildingHash(buildingId, variant, rotationVariant) {
-    return buildingId + "/" + variant + "/" + rotationVariant;
+  return `${buildingId}/${variant}/${rotationVariant}`
 }
 
 /**
@@ -74,19 +74,23 @@ function generateBuildingHash(buildingId, variant, rotationVariant) {
  * @returns {BuildingVariantIdentifier}
  */
 export function getBuildingDataFromCode(code) {
-    assert(gBuildingVariants[code], "Invalid building code: " + code);
-    return gBuildingVariants[code];
+  assert(gBuildingVariants[code], `Invalid building code: ${code}`)
+  return gBuildingVariants[code]
 }
 
 /**
  * Builds the cache for the codes
  */
 export function buildBuildingCodeCache() {
-    for (const code in gBuildingVariants) {
-        const data = gBuildingVariants[code];
-        const hash = generateBuildingHash(data.metaInstance.getId(), data.variant, data.rotationVariant);
-        variantsCache.set(hash, isNaN(+code) ? code : +code);
-    }
+  for (const code in gBuildingVariants) {
+    const data = gBuildingVariants[code]
+    const hash = generateBuildingHash(
+      data.metaInstance.getId(),
+      data.variant,
+      data.rotationVariant
+    )
+    variantsCache.set(hash, Number.isNaN(+code) ? code : +code)
+  }
 }
 
 /**
@@ -96,14 +100,22 @@ export function buildBuildingCodeCache() {
  * @param {number} rotationVariant
  * @returns {number|string}
  */
-export function getCodeFromBuildingData(metaBuilding, variant, rotationVariant) {
-    const hash = generateBuildingHash(metaBuilding.getId(), variant, rotationVariant);
-    const result = variantsCache.get(hash);
-    if (G_IS_DEV) {
-        if (!result) {
-            console.warn("Known hashes:", Array.from(variantsCache.keys()));
-            assertAlways(false, "Building not found by data: " + hash);
-        }
+export function getCodeFromBuildingData(
+  metaBuilding,
+  variant,
+  rotationVariant
+) {
+  const hash = generateBuildingHash(
+    metaBuilding.getId(),
+    variant,
+    rotationVariant
+  )
+  const result = variantsCache.get(hash)
+  if (G_IS_DEV) {
+    if (!result) {
+      console.warn("Known hashes:", Array.from(variantsCache.keys()))
+      assertAlways(false, `Building not found by data: ${hash}`)
     }
-    return result;
+  }
+  return result
 }

@@ -1,6 +1,6 @@
+import { DrawParameters } from "../core/draw_parameters"
 /* typehints:start */
-import { GameRoot } from "./root";
-import { DrawParameters } from "../core/draw_parameters";
+import { GameRoot } from "./root"
 /* typehints:end */
 
 /**
@@ -8,36 +8,36 @@ import { DrawParameters } from "../core/draw_parameters";
  * required components. This is the core of the game logic.
  */
 export class GameSystem {
-    /**
-     * @param {GameRoot} root
-     */
-    constructor(root) {
-        this.root = root;
-    }
+  /**
+   * @param {GameRoot} root
+   */
+  constructor(root) {
+    this.root = root
+  }
 
-    ///// PUBLIC API /////
+  ///// PUBLIC API /////
 
-    /**
-     * Updates the game system, override to perform logic
-     */
-    update() {}
+  /**
+   * Updates the game system, override to perform logic
+   */
+  update() {}
 
-    /**
-     * Override, do not call this directly, use startDraw()
-     * @param {DrawParameters} parameters
-     */
-    draw(parameters) {}
+  /**
+   * Override, do not call this directly, use startDraw()
+   * @param {DrawParameters} parameters
+   */
+  draw(parameters) {}
 
-    /**
-     * Should refresh all caches
-     */
-    refreshCaches() {}
+  /**
+   * Should refresh all caches
+   */
+  refreshCaches() {}
 
-    /**
-     * @see GameSystem.draw Wrapper arround the draw method
-     * @param {DrawParameters} parameters
-     */
-    startDraw(parameters) {
-        this.draw(parameters);
-    }
+  /**
+   * @see GameSystem.draw Wrapper arround the draw method
+   * @param {DrawParameters} parameters
+   */
+  startDraw(parameters) {
+    this.draw(parameters)
+  }
 }

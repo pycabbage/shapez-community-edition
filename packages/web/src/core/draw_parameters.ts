@@ -1,4 +1,4 @@
-import { globalConfig } from "./config";
+import { globalConfig } from "./config"
 
 /**
  * @typedef {import("../game/root").GameRoot} GameRoot
@@ -6,20 +6,20 @@ import { globalConfig } from "./config";
  */
 
 export class DrawParameters {
-    constructor({ context, visibleRect, desiredAtlasScale, zoomLevel, root }) {
-        /** @type {CanvasRenderingContext2D} */
-        this.context = context;
+  constructor({ context, visibleRect, desiredAtlasScale, zoomLevel, root }) {
+    /** @type {CanvasRenderingContext2D} */
+    this.context = context
 
-        /** @type {Rectangle} */
-        this.visibleRect = visibleRect;
+    /** @type {Rectangle} */
+    this.visibleRect = visibleRect
 
-        /** @type {string} */
-        this.desiredAtlasScale = desiredAtlasScale;
+    /** @type {string} */
+    this.desiredAtlasScale = desiredAtlasScale
 
-        /** @type {number} */
-        this.zoomLevel = zoomLevel;
+    /** @type {number} */
+    this.zoomLevel = zoomLevel
 
-        /** @type {GameRoot} */
-        this.root = root;
-    }
+    /** @type {GameRoot} */
+    this.root = root
+  }
 }

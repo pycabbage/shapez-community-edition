@@ -1,20 +1,20 @@
 /* dev:start */
-import { makeDiv, removeAllChildren } from "../../../core/utils";
-import { Vector } from "../../../core/vector";
-import { Entity } from "../../entity";
-import { BaseHUDPart } from "../base_hud_part";
-import { DynamicDomAttach } from "../dynamic_dom_attach";
+import { makeDiv, removeAllChildren } from "../../../core/utils"
+import { Vector } from "../../../core/vector"
+import { Entity } from "../../entity"
+import { BaseHUDPart } from "../base_hud_part"
+import { DynamicDomAttach } from "../dynamic_dom_attach"
 
 /**
  * Allows to inspect entities by pressing F8 while hovering them
  */
 export class HUDEntityDebugger extends BaseHUDPart {
-    createElements(parent) {
-        this.element = makeDiv(
-            parent,
-            "ingame_HUD_EntityDebugger",
-            [],
-            `
+  createElements(parent) {
+    this.element = makeDiv(
+      parent,
+      "ingame_HUD_EntityDebugger",
+      [],
+      `
             <label>Entity Debugger</label>
             <span class="hint">Use F8 to toggle this overlay</span>
 
@@ -22,141 +22,145 @@ export class HUDEntityDebugger extends BaseHUDPart {
                 <div class="entityComponents"></div>
             </div>
         `
-        );
-        this.componentsElem = this.element.querySelector(".entityComponents");
-    }
+    )
+    this.componentsElem = this.element.querySelector(".entityComponents")
+  }
 
-    initialize() {
-        this.root.gameState.inputReceiver.keydown.add(key => {
-            if (key.keyCode === 119) {
-                // F8
-                this.pickEntity();
-            }
-        });
-
-        /**
-         * The currently selected entity
-         * @type {Entity}
-         */
-        this.selectedEntity = null;
-
-        this.lastUpdate = 0;
-
-        this.domAttach = new DynamicDomAttach(this.root, this.element);
-    }
-
-    pickEntity() {
-        const mousePos = this.root.app.mousePosition;
-        if (!mousePos) {
-            return;
-        }
-        const worldPos = this.root.camera.screenToWorld(mousePos);
-        const worldTile = worldPos.toTileSpace();
-        const entity = this.root.map.getTileContent(worldTile, this.root.currentLayer);
-
-        this.selectedEntity = entity;
-        if (entity) {
-            this.rerenderFull(entity);
-        }
-    }
+  initialize() {
+    this.root.gameState.inputReceiver.keydown.add((key) => {
+      if (key.keyCode === 119) {
+        // F8
+        this.pickEntity()
+      }
+    })
 
     /**
-     *
-     * @param {string} name
-     * @param {any} val
-     * @param {number} indent
-     * @param {Array} recursion
+     * The currently selected entity
+     * @type {Entity}
      */
-    propertyToHTML(name, val, indent = 0, recursion = []) {
-        if (indent > 20) {
-            return;
-        }
+    this.selectedEntity = null
 
-        if (val !== null && typeof val === "object") {
-            // Array is displayed like object, with indexes
-            recursion.push(val);
+    this.lastUpdate = 0
 
-            // Get type class name (like Array, Object, Vector...)
-            let typeName = `(${val.constructor ? val.constructor.name : "unknown"})`;
+    this.domAttach = new DynamicDomAttach(this.root, this.element)
+  }
 
-            if (Array.isArray(val)) {
-                typeName = `(Array[${val.length}])`;
-            }
+  pickEntity() {
+    const mousePos = this.root.app.mousePosition
+    if (!mousePos) {
+      return
+    }
+    const worldPos = this.root.camera.screenToWorld(mousePos)
+    const worldTile = worldPos.toTileSpace()
+    const entity = this.root.map.getTileContent(
+      worldTile,
+      this.root.currentLayer
+    )
 
-            if (val instanceof Vector) {
-                typeName = `(Vector[${val.x}, ${val.y}])`;
-            }
+    this.selectedEntity = entity
+    if (entity) {
+      this.rerenderFull(entity)
+    }
+  }
 
-            const colorStyle = `color: hsl(${30 * indent}, 100%, 80%)`;
+  /**
+   *
+   * @param {string} name
+   * @param {any} val
+   * @param {number} indent
+   * @param {Array} recursion
+   */
+  propertyToHTML(name, val, indent = 0, recursion = []) {
+    if (indent > 20) {
+      return
+    }
 
-            let html = `<details class="object" style="${colorStyle}">
+    if (val !== null && typeof val === "object") {
+      // Array is displayed like object, with indexes
+      recursion.push(val)
+
+      // Get type class name (like Array, Object, Vector...)
+      let typeName = `(${val.constructor ? val.constructor.name : "unknown"})`
+
+      if (Array.isArray(val)) {
+        typeName = `(Array[${val.length}])`
+      }
+
+      if (val instanceof Vector) {
+        typeName = `(Vector[${val.x}, ${val.y}])`
+      }
+
+      const colorStyle = `color: hsl(${30 * indent}, 100%, 80%)`
+
+      let html = `<details class="object" style="${colorStyle}">
                             <summary>${name} ${typeName}</summary>
-                            <div>`;
+                            <div>`
 
-            for (const property in val) {
-                let hiddenValue = null;
-                if (val[property] == this.root) {
-                    hiddenValue = "<root>";
-                } else if (val[property] instanceof Node) {
-                    hiddenValue = `<${val[property].constructor.name}>`;
-                } else if (recursion.includes(val[property])) {
-                    // Avoid recursion by not "expanding" object more than once
-                    hiddenValue = "<recursion>";
-                }
-
-                html += this.propertyToHTML(
-                    property,
-                    hiddenValue ? hiddenValue : val[property],
-                    indent + 1,
-                    [...recursion] // still expand same value in other "branches"
-                );
-            }
-
-            html += "</div></details>";
-
-            return html;
+      for (const property in val) {
+        let hiddenValue = null
+        if (val[property] === this.root) {
+          hiddenValue = "<root>"
+        } else if (val[property] instanceof Node) {
+          hiddenValue = `<${val[property].constructor.name}>`
+        } else if (recursion.includes(val[property])) {
+          // Avoid recursion by not "expanding" object more than once
+          hiddenValue = "<recursion>"
         }
 
-        const displayValue = (val + "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;");
-        return `<label>${name}</label> <span>${displayValue}</span>`;
+        html += this.propertyToHTML(
+          property,
+          hiddenValue ? hiddenValue : val[property],
+          indent + 1,
+          [...recursion] // still expand same value in other "branches"
+        )
+      }
+
+      html += "</div></details>"
+
+      return html
     }
 
-    /**
-     * Rerenders the whole container
-     * @param {Entity} entity
-     */
-    rerenderFull(entity) {
-        removeAllChildren(this.componentsElem);
-        let html = "";
+    const displayValue = `${val}`
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+    return `<label>${name}</label> <span>${displayValue}</span>`
+  }
 
-        const property = (strings, val) => `<label>${strings[0]}</label> <span>${val}</span>`;
+  /**
+   * Rerenders the whole container
+   * @param {Entity} entity
+   */
+  rerenderFull(entity) {
+    removeAllChildren(this.componentsElem)
+    let html = ""
 
-        html += property`registered ${!!entity.registered}`;
-        html += property`uid ${entity.uid}`;
-        html += property`destroyed ${!!entity.destroyed}`;
+    const property = (strings, val) =>
+      `<label>${strings[0]}</label> <span>${val}</span>`
 
-        for (const componentId in entity.components) {
-            const data = entity.components[componentId];
-            html += "<details class='object'>";
-            html += "<summary>" + componentId + "</summary><div>";
+    html += property`registered ${!!entity.registered}`
+    html += property`uid ${entity.uid}`
+    html += property`destroyed ${!!entity.destroyed}`
 
-            for (const property in data) {
-                // Put entity into recursion list, so it won't get "expanded"
-                html += this.propertyToHTML(property, data[property], 0, [entity]);
-            }
+    for (const componentId in entity.components) {
+      const data = entity.components[componentId]
+      html += "<details class='object'>"
+      html += `<summary>${componentId}</summary><div>`
 
-            html += "</div></details>";
-        }
+      for (const property in data) {
+        // Put entity into recursion list, so it won't get "expanded"
+        html += this.propertyToHTML(property, data[property], 0, [entity])
+      }
 
-        this.componentsElem.innerHTML = html;
+      html += "</div></details>"
     }
 
-    update() {
-        this.domAttach.update(!!this.selectedEntity);
-    }
+    this.componentsElem.innerHTML = html
+  }
+
+  update() {
+    this.domAttach.update(!!this.selectedEntity)
+  }
 }
 
 /* dev:end */
