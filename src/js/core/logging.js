@@ -1,5 +1,5 @@
 import { globalConfig } from "../core/config";
-import circularJson from "circular-json";
+import { stringify as flattedStringify } from "flatted";
 
 /*
 Logging functions
@@ -106,7 +106,7 @@ function preparePayload(key, value) {
  * @param {any} payload
  */
 export function stringifyObjectContainingErrors(payload) {
-    return circularJson.stringify(payload, preparePayload);
+    return flattedStringify(payload, preparePayload);
 }
 
 export function globalDebug(context, ...args) {

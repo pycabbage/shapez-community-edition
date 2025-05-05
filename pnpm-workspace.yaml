@@ -1,0 +1,9 @@
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@parcel/watcher'
+  - core-js
+  - gifsicle
+  - jpegtran-bin
+  - mozjpeg
+  - optipng-bin
+  - pngquant-bin
