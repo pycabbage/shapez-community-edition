@@ -1,0 +1,143 @@
+{
+    "name": "@shapez/translations",
+    "version": "1.6.0",
+    "description": "",
+    "exports": {
+        "./base-ar": {
+            "import": "./src/base-ar.yaml",
+            "require": "./src/base-ar.yaml"
+        },
+        "./base-cat": {
+            "import": "./src/base-cat.yaml",
+            "require": "./src/base-cat.yaml"
+        },
+        "./base-cz": {
+            "import": "./src/base-cz.yaml",
+            "require": "./src/base-cz.yaml"
+        },
+        "./base-da": {
+            "import": "./src/base-da.yaml",
+            "require": "./src/base-da.yaml"
+        },
+        "./base-de": {
+            "import": "./src/base-de.yaml",
+            "require": "./src/base-de.yaml"
+        },
+        "./base-el": {
+            "import": "./src/base-el.yaml",
+            "require": "./src/base-el.yaml"
+        },
+        "./base-en": {
+            "import": "./src/base-en.yaml",
+            "require": "./src/base-en.yaml"
+        },
+        "./base-es": {
+            "import": "./src/base-es.yaml",
+            "require": "./src/base-es.yaml"
+        },
+        "./base-fi": {
+            "import": "./src/base-fi.yaml",
+            "require": "./src/base-fi.yaml"
+        },
+        "./base-fr": {
+            "import": "./src/base-fr.yaml",
+            "require": "./src/base-fr.yaml"
+        },
+        "./base-he": {
+            "import": "./src/base-he.yaml",
+            "require": "./src/base-he.yaml"
+        },
+        "./base-hr": {
+            "import": "./src/base-hr.yaml",
+            "require": "./src/base-hr.yaml"
+        },
+        "./base-hu": {
+            "import": "./src/base-hu.yaml",
+            "require": "./src/base-hu.yaml"
+        },
+        "./base-ind": {
+            "import": "./src/base-ind.yaml",
+            "require": "./src/base-ind.yaml"
+        },
+        "./base-it": {
+            "import": "./src/base-it.yaml",
+            "require": "./src/base-it.yaml"
+        },
+        "./base-ja": {
+            "import": "./src/base-ja.yaml",
+            "require": "./src/base-ja.yaml"
+        },
+        "./base-kor": {
+            "import": "./src/base-kor.yaml",
+            "require": "./src/base-kor.yaml"
+        },
+        "./base-lt": {
+            "import": "./src/base-lt.yaml",
+            "require": "./src/base-lt.yaml"
+        },
+        "./base-nl": {
+            "import": "./src/base-nl.yaml",
+            "require": "./src/base-nl.yaml"
+        },
+        "./base-no": {
+            "import": "./src/base-no.yaml",
+            "require": "./src/base-no.yaml"
+        },
+        "./base-pl": {
+            "import": "./src/base-pl.yaml",
+            "require": "./src/base-pl.yaml"
+        },
+        "./base-pt-BR": {
+            "import": "./src/base-pt-BR.yaml",
+            "require": "./src/base-pt-BR.yaml"
+        },
+        "./base-pt-PT": {
+            "import": "./src/base-pt-PT.yaml",
+            "require": "./src/base-pt-PT.yaml"
+        },
+        "./base-ro": {
+            "import": "./src/base-ro.yaml",
+            "require": "./src/base-ro.yaml"
+        },
+        "./base-ru": {
+            "import": "./src/base-ru.yaml",
+            "require": "./src/base-ru.yaml"
+        },
+        "./base-sl": {
+            "import": "./src/base-sl.yaml",
+            "require": "./src/base-sl.yaml"
+        },
+        "./base-sr": {
+            "import": "./src/base-sr.yaml",
+            "require": "./src/base-sr.yaml"
+        },
+        "./base-sv": {
+            "import": "./src/base-sv.yaml",
+            "require": "./src/base-sv.yaml"
+        },
+        "./base-tr": {
+            "import": "./src/base-tr.yaml",
+            "require": "./src/base-tr.yaml"
+        },
+        "./base-uk": {
+            "import": "./src/base-uk.yaml",
+            "require": "./src/base-uk.yaml"
+        },
+        "./base-zh-CN-ISBN": {
+            "import": "./src/base-zh-CN-ISBN.yaml",
+            "require": "./src/base-zh-CN-ISBN.yaml"
+        },
+        "./base-zh-CN": {
+            "import": "./src/base-zh-CN.yaml",
+            "require": "./src/base-zh-CN.yaml"
+        },
+        "./base-zh-TW": {
+            "import": "./src/base-zh-TW.yaml",
+            "require": "./src/base-zh-TW.yaml"
+        }
+    },
+    "keywords": [],
+    "author": "",
+    "license": "GPL-3.0-or-later",
+    "packageManager": "pnpm@10.10.0"
+}

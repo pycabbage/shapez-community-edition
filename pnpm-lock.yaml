@@ -193,8 +193,18 @@ importers:
         specifier: ^2.7.1
         version: 2.7.1
 
+  packages/resources: {}
+
+  packages/translations: {}
+
   packages/web:
     dependencies:
+      '@shapez/resources':
+        specifier: workspace:^
+        version: link:../resources
+      '@shapez/translations':
+        specifier: workspace:^
+        version: link:../translations
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.7.3)(vite@6.3.4(@types/node@22.15.3)(sass@1.87.0)(terser@5.39.0)(yaml@2.7.1))

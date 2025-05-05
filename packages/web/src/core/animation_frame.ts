@@ -1,7 +1,7 @@
 import { Signal } from "./signal";
 
 // @ts-ignore
-import BackgroundAnimationFrameEmitterWorker from "../webworkers/background_animation_frame_emittter.worker";
+import BackgroundAnimationFrameEmitterWorker from "@/webworkers/background_animation_frame_emittter.worker?worker";
 
 import { createLogger } from "./logging";
 const logger = createLogger("animation_frame");
@@ -10,10 +10,15 @@ const maxDtMs = 1000;
 const resetDtMs = 16;
 
 export class AnimationFrame {
+    frameEmitted: Signal<[number]>;
+    bgFrameEmitted: Signal<[number]>;
+    backgroundWorker: Worker;
+    lastTime: DOMHighResTimeStamp;
+    bgLastTime: DOMHighResTimeStamp;
+    boundMethod: (time: number) => void;
+
     constructor() {
-        /** @type {Signal<[number]>} */
         this.frameEmitted = new Signal();
-        /** @type {Signal<[number]>} */
         this.bgFrameEmitted = new Signal();
 
         this.lastTime = performance.now();
@@ -43,10 +48,10 @@ export class AnimationFrame {
 
     start() {
         assertAlways(window.requestAnimationFrame, "requestAnimationFrame is not supported!");
-        this.handleAnimationFrame();
+        this.handleAnimationFrame(performance.now());
     }
 
-    handleAnimationFrame(time) {
+    handleAnimationFrame(time: number) {
         let dt = time - this.lastTime;
 
         if (dt > maxDtMs) {

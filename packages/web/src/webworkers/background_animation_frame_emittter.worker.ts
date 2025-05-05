@@ -9,7 +9,6 @@ function tick() {
     const delta = now - lastTick;
     lastTick = now;
 
-    // @ts-ignore
     self.postMessage({ delta });
 }
 
