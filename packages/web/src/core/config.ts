@@ -1,4 +1,4 @@
-import debug from "./config.local";
+import debug from "./config.local.ts";
 
 export const IS_DEBUG =
     G_IS_DEV &&

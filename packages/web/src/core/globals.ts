@@ -6,12 +6,12 @@ import { Application } from "../application";
  * Used for the bug reporter, and the click detector which both have no handles to this.
  * It would be nicer to have no globals, but this is the only one. I promise!
  * @type {Application} */
-export let GLOBAL_APP = null;
+export let GLOBAL_APP: Application | null = null;
 
 /**
  * @param {Application} app
  */
-export function setGlobalApp(app) {
+export function setGlobalApp(app: Application) {
     assert(!GLOBAL_APP, "Tried to set GLOBAL_APP twice");
     GLOBAL_APP = app;
 }

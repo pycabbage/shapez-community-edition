@@ -1,4 +1,4 @@
-import { globalConfig } from "../core/config";
+import { globalConfig } from "./config";
 import { stringify as flattedStringify } from "flatted";
 
 /*
